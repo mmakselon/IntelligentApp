@@ -1,5 +1,53 @@
-﻿<h3>MyMovies</h3>
+﻿@page "/my-movies"
+@using IntelligentApp.Models
+
+<h3>Moje ulubione filmy</h3>
+
+<p>Poniżej znajduje się lista kilku moich ulubionych filmów. Dane są wzięte bezpośrednio z kodu.</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Tytuł</th>
+            <th>Rok</th>
+            <th>Gatunek</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var movie in _movies)
+        {
+            <tr>
+                <td>@movie.Title</td>
+                <td>@movie.Year</td>
+                <td>@movie.Genre</td>
+            </tr>
+        }
+    </tbody>
+</table>
 
 @code {
+    private List<Movie> _movies = new List<Movie>();
 
+    [Inject]
+    public IWebHostEnvironment Env { get; set; }
+
+    protected override void OnInitialized()
+    {
+        var webRootPath = Env.WebRootPath;
+        var csvPath = Path.Combine(webRootPath, "data", "favourite_movies.csv");
+        var lines = File.ReadAllLines(csvPath);
+
+        for (int i = 1; i < lines.Length; i++)
+        {
+            var line = lines[i];
+
+            var parts = line.Split(',');
+
+            var title = parts[0].Trim('"');
+            var year = int.Parse(parts[1].Trim());
+            var genre = parts[2].Trim();
+
+            _movies.Add(new Movie { Title = title, Year = year, Genre = genre });
+        }
+    }
 }
