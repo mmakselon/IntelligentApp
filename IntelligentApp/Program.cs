@@ -13,6 +13,18 @@ namespace IntelligentApp
 
             var azureApiKey = builder.Configuration["AzureAI:ApiKey"];
             var azureEndpoint = builder.Configuration["AzureAI:Endpoint"];
+            builder.Services.AddHttpClient("OpenAI", client =>
+            {
+                client.BaseAddress = new Uri(openAiEndpoint);
+                client.DefaultRequestHeaders.Authorization = 
+                    new AuthenticationHeaderValue("Bearer", openAiApiKey);
+            });
+
+            builder.Services.AddHttpClient("AzureAI", client =>
+            {
+                client.BaseAddress = new Uri(azureEndpoint);
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", azureApiKey);
+            });
             // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
