@@ -8,6 +8,11 @@ namespace IntelligentApp
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            var openAiApiKey = builder.Configuration["OpenAI:ApiKey"];
+            var openAiEndpoint = builder.Configuration["OpenAI:Endpoint"];
+
+            var azureApiKey = builder.Configuration["AzureAI:ApiKey"];
+            var azureEndpoint = builder.Configuration["AzureAI:Endpoint"];
             // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
