@@ -109,7 +109,7 @@ else if (!string.IsNullOrWhiteSpace(_generatedText))
 
             if (!response.IsSuccessStatusCode)
             {
-                return "Przepraszam, nie udało się uzyskać odpowiedzi od AI";
+                return "Przepraszam, nie udało się uzyskać odpowiedzi od AI.";
             }
 
             var jsonResponse = await response.Content.ReadFromJsonAsync<ChatCompletionResponse>();
